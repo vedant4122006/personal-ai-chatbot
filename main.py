@@ -1,21 +1,25 @@
-import os
 import google.generativeai as genai
+import os
 from dotenv import load_dotenv
 
-# Load API key from .env file
 load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
+google_api_key = os.getenv("GOOGLE_API_KEY")
 
-# Configure Gemini
-genai.configure(api_key=api_key)
+genai.configure(api_key=google_api_key)
 
-# Load Gemini Pro model
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-# Take input from user
-user_input = input("👤 You: ")
+print("🤖 Gemini AI Chatbot Activated! Type 'exit' to quit.\n")
 
-# Get response from Gemini
-response = model.generate_content(user_input)
+while True:
+    user_input = input("👤 You: ")
 
-print("\n🤖 Gemini: ", response.text)
+    if user_input.lower() in ['exit', 'quit']:
+        print("🤖 Gemini: Chat ended. Goodbye!")
+        break
+
+    try:
+        response = model.generate_content(user_input)
+        print("🤖 Gemini:", response.text, "\n")
+    except Exception as e:
+        print("⚠️ Error:", e, "\n")
